@@ -1,0 +1,28 @@
+# This file implements generic generation rules for BOOOS
+
+LIBNAME := libBOOOS.a
+
+# Path to BOOOS root directory 
+BOOOS := $(abspath $(dir $(filter %Makedefs, $(MAKEFILE_LIST))))
+
+INCLUDEPATH := $(BOOOS)/lib
+LINKPATH := $(BOOOS)/lib
+
+GDB_DEBUG := 1
+
+CXXFLAGS := -I$(INCLUDEPATH)
+LDFLAGS := -L$(LINKPATH)
+
+ifeq ($(GDB_DEBUG), 1)
+CXXFLAGS := $(CXXFLAGS) -g -O0
+endif
+
+%_Test.o: %_Test.cc
+	g++ $(CXXFLAGS) -c $< -o $@
+
+booos.o: booos.cc
+	g++ $(CXXFLAGS) -c $< -o $@
+
+%.o: %.cc
+	g++ $(CXXFLAGS) -c $< -o $@
+	ar rvs $(LIBNAME) $@
