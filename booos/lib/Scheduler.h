@@ -36,6 +36,10 @@ public:
 
 	static Scheduler * self() { return __dispatcher; }
 
+	unsigned long long next_exit(){return Task::__sleeping.next_exit();}
+
+	void pass_to_ready();
+
 protected:
 	virtual Task * choose_next();
 

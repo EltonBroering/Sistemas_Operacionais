@@ -9,6 +9,7 @@
 #include <ucontext.h>
 #include "Queue.h"
 
+
 namespace BOOOS {
 
 
@@ -53,8 +54,12 @@ Task * next;
 
 Task * Scheduler::choose_next() {
 
+	if(Task::__ready.length()){
 	return (Task *)Task::__ready.remove();
-
+	}
+	else{
+		return 0;
+	}
 }
 
 void Scheduler::notify_time(Timer::Timestamp ticks){
@@ -64,6 +69,10 @@ void Scheduler::notify_time(Timer::Timestamp ticks){
 	else{
 		Task::self()->yield();
 	}
+}
+
+void Scheduler::pass_to_ready(){
+	Task::insert_ready((Task*)Task::__sleeping.remove());
 }
 
 

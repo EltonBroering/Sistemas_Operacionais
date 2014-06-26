@@ -36,6 +36,8 @@ public:
 
 	static void delay_ticks(Timestamp tics);
 	static void delay(Timestamp time);
+	static void set_controle(){__controle=true;}
+	static void free_controle(){__controle=false;}
 
 private:
 	static void sig_handler(int signum);
@@ -47,6 +49,8 @@ private:
 
 	static Scheduler * __scheduler;
 	static Timestamp __period;
+	static volatile bool __controle;
+	static bool __pending;
 };
 
 } /* namespace BOOOS */

@@ -20,7 +20,8 @@ public:
 		WAITING,
 		RUNNING,
 		FINISHING,
-		SCHEDULER
+		SCHEDULER,
+		SLEEPING
 	};
 
 	Task(void (*entry_point)(void *), int nargs, void * arg);
@@ -41,14 +42,17 @@ public:
 	static int _tid_counter;
 	static Task * self() { return (Task*)__running; }
 	static void init();
-	static int count() { return Task::_Task_Count;}
+	static int count() {return Task::_Task_Count;}
 	int join(Task * t);
 	void wait_you(Task * t);
 	int cod_end;
+	void sleep(int t);
+	void insert_ready(Task * task);
+
 
 protected: // These are used by friend class Scheduler
 	static Queue __ready;
-	static Queue __waiting;
+	static Queue __sleeping;
 	State _state;
 	static int _Task_Count;
 
